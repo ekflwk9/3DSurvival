@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAction : MonoBehaviour, ILoad
@@ -13,5 +11,17 @@ public class PlayerAction : MonoBehaviour, ILoad
         anim = GetComponent<Animator>();
     }
 
-    
+    private void Update()
+    {
+        if (!GameManager.stopGame)
+        {
+            Move();
+        }
+    }
+
+    private void Move()
+    {
+        var isMove = GameManager.player.isMove;
+        if(isMove) anim.SetBool("Move", isMove);   
+    }
 }
