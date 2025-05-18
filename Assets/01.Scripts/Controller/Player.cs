@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, ILoad
 
     public void OnLoad()
     {
-        action = GetComponent<PlayerAction>();
+        //action = GetComponent<PlayerAction>();
         controller = GetComponent<PlayerController>();
 
         GameManager.Add(this);

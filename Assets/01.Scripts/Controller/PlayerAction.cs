@@ -22,6 +22,6 @@ public class PlayerAction : MonoBehaviour, ILoad
     private void Move()
     {
         var isMove = GameManager.player.isMove;
-        if(isMove) anim.SetBool("Move", isMove);   
+        if(isMove) anim.SetBool("Move", isMove);
     }
 }
