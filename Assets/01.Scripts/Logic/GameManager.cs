@@ -5,8 +5,11 @@ using UnityEngine;
 public static class GameManager
 {
     public static bool stopGame;
+    public static Fade fade { get; private set; }
     public static Player player { get; private set; }
     public static CamController cam { get; private set; }
+
+    public static readonly UiManager ui = new UiManager();
 
     public static readonly StartManager startManager = new StartManager();
 
@@ -20,5 +23,11 @@ public static class GameManager
     {
         if (player == null) player = _playerComponent;
         else Service.Log("Player는 이미 매니저에 추가된 상태");
+    }
+
+    public static void Add(Fade _fadeComponent)
+    {
+        if (fade == null) fade = _fadeComponent;
+        else Service.Log("FadeComponent는 이미 매니저에 추가된 상태");
     }
 }

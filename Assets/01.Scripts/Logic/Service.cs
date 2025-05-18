@@ -5,6 +5,11 @@ public interface ILoad { public void OnLoad(); }
 public interface IAwake { public void OnAwake(); }
 public interface IStart { public void OnStart(); }
 
+//UI
+public interface IShowUi{ public void OnShow(); }
+public interface IHideUi{ public void OnHide(); }
+public interface IStateUi{ public void OnState(); }
+
 public class Service
 {
     /// <summary>

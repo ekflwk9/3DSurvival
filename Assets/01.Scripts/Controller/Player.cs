@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, ILoad
@@ -17,5 +15,6 @@ public class Player : MonoBehaviour, ILoad
         controller = GetComponent<PlayerController>();
 
         GameManager.Add(this);
+        DontDestroyOnLoad(this.gameObject);
     }
 }
