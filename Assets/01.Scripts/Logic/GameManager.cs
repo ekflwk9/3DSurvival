@@ -13,12 +13,12 @@ public static class GameManager
     public static void Add(CamController _camComponent)
     {
         if (cam == null) cam = _camComponent;
-        else Debug.Log("cam은 이미 매니저에 추가된 상태");
+        else Service.Log("cam은 이미 매니저에 추가된 상태");
     }
 
     public static void Add(Player _playerComponent)
     {
         if (player == null) player = _playerComponent;
-        else Debug.Log("Player는 이미 매니저에 추가된 상태");
+        else Service.Log("Player는 이미 매니저에 추가된 상태");
     }
 }
