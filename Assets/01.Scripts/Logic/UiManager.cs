@@ -1,6 +1,5 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum UiCode
@@ -9,52 +8,65 @@ public enum UiCode
     Health = 1,
 }
 
-public class UiValue<T> where T : IShowUi, IHideUi, IStateUi
-{
-    private Dictionary<UiCode, T> uiValue;
-
-    public void Add(UiCode _uiCode, T _uiComponent)
-    {
-
-    }
-
-    public void Call(UiCode _uiCode)
-    {
-
-    }
-}
-
-public class UiManager : MonoBehaviour
+public class UiManager
 {
     private Dictionary<UiCode, IShowUi> show = new Dictionary<UiCode, IShowUi>();
     private Dictionary<UiCode, IHideUi> hide = new Dictionary<UiCode, IHideUi>();
-    private Dictionary<UiCode, IStateUi> state = new Dictionary<UiCode, IStateUi>();
+    private Dictionary<UiCode, IUpdateUi> update = new Dictionary<UiCode, IUpdateUi>();
 
-    public void Add<T>(UiCode _uiCode, T _ui)
+    /// <summary>
+    /// UiManager에 추가할 UI컴포넌트
+    /// </summary>
+    /// <param name="_uiCode"></param>
+    /// <param name="_uiComponent"></param>
+    public void Add(UiCode _uiCode, MonoBehaviour _uiComponent)
     {
-        if(typeof(T) == typeof(IShowUi))
+        if(_uiComponent is IShowUi showUi)
         {
+            if (!show.ContainsKey(_uiCode)) show.Add(_uiCode, showUi);
+            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"ShowUi\"에 추가된 상태");
+        }
 
+        if (_uiComponent is IHideUi hideUi)
+        {
+            if (!hide.ContainsKey(_uiCode)) hide.Add(_uiCode, hideUi);
+            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"HideUi\"에 추가된 상태");
+        }
+
+        if (_uiComponent is IUpdateUi updateUi)
+        {
+            if (!update.ContainsKey(_uiCode)) update.Add(_uiCode, updateUi);
+            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"UpdateUi\"에 추가된 상태");
         }
     }
 
-    public void Add(UiCode _uiCode, IShowUi _showUi)
+    /// <summary>
+    /// 활성화 하고 싶은 UI 호출
+    /// </summary>
+    /// <param name="_uiCode"></param>
+    public void Show(UiCode _uiCode)
     {
-        if (!show.ContainsKey(_uiCode)) show.Add(_uiCode, _showUi);
-        else Service.Log($"{_uiCode}로 이미 추가된 IShowUi가 존재함");
+        if (show.ContainsKey(_uiCode)) show[_uiCode].OnShow();
+        else Service.Log($"{_uiCode}라는 키의 \"ShowUi\"는 추가되지 않은 상태");
     }
 
-    public void Add(UiCode _uiCode, IHideUi _hideUi)
+    /// <summary>
+    /// 숨기고 싶은 UI 호출
+    /// </summary>
+    /// <param name="_uiCode"></param>
+    public void Hide(UiCode _uiCode)
     {
-        if (!hide.ContainsKey(_uiCode)) hide.Add(_uiCode, _hideUi);
-        else Service.Log($"{_uiCode}로 이미 추가된 IHideUi가 존재함");
+        if (hide.ContainsKey(_uiCode)) hide[_uiCode].OnHide();
+        else Service.Log($"{_uiCode}라는 키의 \"HideUi\"는 추가되지 않은 상태");
     }
 
-    public void Add(UiCode _uiCode, IStateUi _stateUi)
+    /// <summary>
+    /// 상태를 업데이트하고 싶은 Ui를 호출
+    /// </summary>
+    /// <param name="_uiCode"></param>
+    public void UpdateUi(UiCode _uiCode)
     {
-        if (!state.ContainsKey(_uiCode)) state.Add(_uiCode, _stateUi);
-        else Service.Log($"{_uiCode}로 이미 추가된 IStateUi가 존재함");
+        if (update.ContainsKey(_uiCode)) update[_uiCode].OnUpdate();
+        else Service.Log($"{_uiCode}라는 키의 \"StateUi\"는 추가되지 않은 상태");
     }
-
-
 }

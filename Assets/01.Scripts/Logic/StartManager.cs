@@ -9,7 +9,7 @@ public class StartManager
     public void Add(IStart _startScript) => start += _startScript.OnStart;
 
     /// <summary>
-    /// 생명주기에 등록된 모든 메서드를 호출하는 메서드
+    /// 커스텀 생명주기에 등록된 모든 메서드를 호출하는 메서드
     /// </summary>
     public void OnEvent()
     {

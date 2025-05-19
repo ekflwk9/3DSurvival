@@ -9,7 +9,11 @@ public class Fade : MonoBehaviour, IAwake
 
     private void Awake() => GameManager.startManager.Add(this);
 
-    public void OnAwake() => anim = GetComponent<Animator>();
+    public void OnAwake()
+    {
+        anim = GetComponent<Animator>();
+        GameManager.Add(this);
+    }
 
     /// <summary>
     /// 페이드 인과 동시에 

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ILoad
@@ -9,6 +6,14 @@ public class PlayerController : MonoBehaviour, ILoad
 
     public bool isMove { get; private set; }
     private Rigidbody rigid;
+
+    private Vector3[] jumpPos =
+    {
+        new Vector3(0.35f, 0f, 0.35f),
+        new Vector3(0.35f, 0f, -0.35f),
+        new Vector3(-0.35f, 0f, 0.35f),
+        new Vector3(-0.35f, 0f, -0.35f)
+    };
 
     private void Awake() => GameManager.startManager.Add(this);
 
@@ -52,25 +57,26 @@ public class PlayerController : MonoBehaviour, ILoad
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            var canJump = false;
             var pos = this.transform.position;
-            pos.y += 1;
+            pos.y += 0.4f;
 
-            var direction = Vector3.down * 100;
-            RaycastHit rayHit;
-
-            if (Physics.Raycast(pos, direction, out rayHit))
+            for (int i = 0; i < 4; i++)
             {
-                if (rayHit.collider.CompareTag("Ground"))
-                {
-                    var distance = pos.y - rayHit.point.y;
-                    distance = distance < 0 ? distance * -1 : distance;
+                RaycastHit rayHit;
 
-                    if (distance < 1.3f)
+                //4방면 중 한개라도 땅에 닿아있는 판정일 경우 점프 가능
+                if (Physics.Raycast(pos + jumpPos[i], Vector3.down, out rayHit, 0.5f))
+                {
+                    if (rayHit.collider.CompareTag("Ground"))
                     {
-                        rigid.velocity = Vector3.up * 7;
+                        canJump = true;
+                        break;
                     }
                 }
             }
+
+            if (canJump) rigid.velocity = Vector3.up * 7;
         }
     }
 

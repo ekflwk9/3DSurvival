@@ -7,13 +7,13 @@ public static class GameManager
     public static bool stopGame;
     public static Fade fade { get; private set; }
     public static Player player { get; private set; }
-    public static CamController cam { get; private set; }
+    public static PlayCamera cam { get; private set; }
 
     public static readonly UiManager ui = new UiManager();
 
     public static readonly StartManager startManager = new StartManager();
 
-    public static void Add(CamController _camComponent)
+    public static void Add(PlayCamera _camComponent)
     {
         if (cam == null) cam = _camComponent;
         else Service.Log("cam은 이미 매니저에 추가된 상태");

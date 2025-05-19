@@ -32,5 +32,4 @@ IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IAwake
     {
         if(touchImage.activeSelf) touchImage.SetActive(false);
     }
-
 }
