@@ -14,34 +14,29 @@ public class UiManager
     private Dictionary<UiCode, IHideUi> hide = new Dictionary<UiCode, IHideUi>();
     private Dictionary<UiCode, IUpdateUi> update = new Dictionary<UiCode, IUpdateUi>();
 
-    /// <summary>
-    /// UiManager에 추가할 UI컴포넌트
-    /// </summary>
-    /// <param name="_uiCode"></param>
-    /// <param name="_uiComponent"></param>
-    public void Add(UiCode _uiCode, MonoBehaviour _uiComponent)
+    public void Add<T>(UiCode _uiCode, T _uiComponent) where T : class
     {
         if(_uiComponent is IShowUi showUi)
         {
             if (!show.ContainsKey(_uiCode)) show.Add(_uiCode, showUi);
-            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"ShowUi\"에 추가된 상태");
+            else Service.Log($"{_uiCode}라는 키로 이미 \"ShowUi\"에 추가된 상태");
         }
 
         if (_uiComponent is IHideUi hideUi)
         {
             if (!hide.ContainsKey(_uiCode)) hide.Add(_uiCode, hideUi);
-            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"HideUi\"에 추가된 상태");
+            else Service.Log($"{_uiCode}라는 키로 이미 \"HideUi\"에 추가된 상태");
         }
 
         if (_uiComponent is IUpdateUi updateUi)
         {
             if (!update.ContainsKey(_uiCode)) update.Add(_uiCode, updateUi);
-            else Service.Log($"{_uiCode}라는 키로 {_uiComponent.name}는 이미 \"UpdateUi\"에 추가된 상태");
+            else Service.Log($"{_uiCode}라는 키로 이미 \"UpdateUi\"에 추가된 상태");
         }
     }
 
     /// <summary>
-    /// 활성화 하고 싶은 UI 호출
+    /// 활성화 하고 싶은 UI 호출 (없다면 UiManager/UiCode에 추가)
     /// </summary>
     /// <param name="_uiCode"></param>
     public void Show(UiCode _uiCode)
@@ -51,7 +46,7 @@ public class UiManager
     }
 
     /// <summary>
-    /// 숨기고 싶은 UI 호출
+    /// 숨기고 싶은 UI 호출 (없다면 UiManager/UiCode에 추가)
     /// </summary>
     /// <param name="_uiCode"></param>
     public void Hide(UiCode _uiCode)
@@ -61,7 +56,7 @@ public class UiManager
     }
 
     /// <summary>
-    /// 상태를 업데이트하고 싶은 Ui를 호출
+    /// 상태를 업데이트하고 싶은 Ui를 호출 (없다면 UiManager/UiCode에 추가)
     /// </summary>
     /// <param name="_uiCode"></param>
     public void UpdateUi(UiCode _uiCode)

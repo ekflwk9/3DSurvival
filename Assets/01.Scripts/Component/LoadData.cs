@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiControler : MonoBehaviour, IAwake
+public class LoadData : MonoBehaviour, ILoad
 {
     private void Awake() => GameManager.lifeCycle.Add(this);
 
-    public void OnAwake()
+    public void OnLoad()
     {
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    public void OnMenu()
-    {
-
+        GameManager.sound.Load();
     }
 }

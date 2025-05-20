@@ -14,7 +14,7 @@ public class Sun : MonoBehaviour, IStart
     [Header("")]
     [SerializeField] private AnimationCurve intencity;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnStart()
     {

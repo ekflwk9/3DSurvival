@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class GameManager
 {
@@ -11,7 +12,19 @@ public static class GameManager
 
     public static readonly UiManager ui = new UiManager();
 
-    public static readonly StartManager startManager = new StartManager();
+    public static readonly LifeCycle lifeCycle = new LifeCycle();
+
+    public static readonly SoundManager sound = new SoundManager();
+
+    public static readonly TriggerManager trigger = new TriggerManager();
+
+    public static void ChangeScene(string _sceneName)
+    {
+        sound.Clear();
+        lifeCycle.OnEndEvent();
+        player.transform.position = Vector3.zero;
+        SceneManager.LoadScene(_sceneName);
+    }
 
     public static void Add(PlayCamera _camComponent)
     {

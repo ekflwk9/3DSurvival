@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayCamera : MonoBehaviour, ILoad
 {
+    [SerializeField] private float sensitivity = 0.06f;
+
     private Animator anim;
     private Vector2 mouse;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnLoad()
     {
@@ -17,14 +18,28 @@ public class PlayCamera : MonoBehaviour, ILoad
 
     private void Update()
     {
-        mouse.x += Input.GetAxisRaw("Mouse X");
-        mouse.y += Input.GetAxisRaw("Mouse Y");
+        if (!GameManager.stopGame)
+        {
+            Mouse();
+        }
+    }
 
+    private void Mouse()
+    {
         if (mouse.y < -90) mouse.y = -90;
         else if (mouse.y > 60) mouse.y = 60;
 
         this.transform.rotation = Quaternion.Euler(-mouse.y, mouse.x, 0);
         GameManager.player.transform.rotation = Quaternion.Euler(0, mouse.x, 0);
+    }
+
+    /// <summary>
+    /// InputSystem전용 호출 메서드
+    /// </summary>
+    /// <param name="context"></param>
+    public void Mouse(InputAction.CallbackContext context)
+    {
+        mouse += context.ReadValue<Vector2>() * sensitivity;
     }
 
     /// <summary>

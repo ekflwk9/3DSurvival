@@ -7,7 +7,7 @@ public class Fade : MonoBehaviour, IAwake
     private Animator anim;
     private Void fadeFunction;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnAwake()
     {

@@ -7,7 +7,7 @@ public class HealthUi : MonoBehaviour, ILoad, IUpdateUi, IShowUi, IHideUi
 {
     private Image slider;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnLoad()
     {

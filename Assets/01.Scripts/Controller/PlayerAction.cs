@@ -4,7 +4,7 @@ public class PlayerAction : MonoBehaviour, ILoad
 {
     private Animator anim;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnLoad()
     {

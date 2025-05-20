@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, ILoad
 {
@@ -9,13 +10,16 @@ public class PlayerController : MonoBehaviour, ILoad
 
     private Vector3[] jumpPos =
     {
-        new Vector3(0.35f, 0f, 0.35f),
-        new Vector3(0.35f, 0f, -0.35f),
-        new Vector3(-0.35f, 0f, 0.35f),
-        new Vector3(-0.35f, 0f, -0.35f)
+        new Vector3(0f, 0.4f, 0f),
+        new Vector3(0f, 0.4f, -0.35f),
+        new Vector3(0f, 0.4f, 0.35f),
+        new Vector3(-0.35f, 0.4f, 0f),
+        new Vector3(0.35f, 0.4f, 0f)
     };
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private Vector3 movePos;
+
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public void OnLoad()
     {
@@ -27,7 +31,6 @@ public class PlayerController : MonoBehaviour, ILoad
         if (!GameManager.stopGame)
         {
             Move();
-            Jump();
         }
     }
 
@@ -35,50 +38,103 @@ public class PlayerController : MonoBehaviour, ILoad
     {
         var nextPos = Vector3.zero;
         var jumpPos = Vector3.zero;
-        isMove = false;
+        jumpPos.y = rigid.velocity.y;
 
-        if (Input.GetKey(KeyCode.W)) nextPos.z = 1;
-        else if (Input.GetKey(KeyCode.S)) nextPos.z = -1;
-
-        if (Input.GetKey(KeyCode.A)) nextPos.x = -1;
-        else if (Input.GetKey(KeyCode.D)) nextPos.x = 1;
-
-        if (nextPos != Vector3.zero)
+        if (movePos != Vector3.zero)
         {
-            nextPos = (this.transform.forward * nextPos.z) + (this.transform.right * nextPos.x);
-            isMove = true;
+            nextPos = (this.transform.forward * movePos.y) + (this.transform.right * movePos.x);
         }
 
-        jumpPos.y = rigid.velocity.y;
         rigid.velocity = nextPos.normalized * moveSpeed + jumpPos;
     }
 
-    private void Jump()
+    /// <summary>
+    /// InputSystem전용 호출 메서드
+    /// </summary>
+    /// <param name="context"></param>
+    public void Move(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        movePos = context.ReadValue<Vector3>();
+        isMove = false;
+
+        if (movePos != Vector3.zero) isMove = true;
+    }
+
+    /// <summary>
+    /// InputSystem전용 호출 메서드
+    /// </summary>
+    public void Jump()
+    {
+        var canJump = false;
+        var pos = this.transform.position;
+
+        for (int i = 0; i < 5; i++)
         {
-            var canJump = false;
-            var pos = this.transform.position;
-            pos.y += 0.4f;
+            RaycastHit rayHit;
+            //Debug.DrawRay(pos + jumpPos[i], Vector3.down, Color.red, 0.5f);
 
-            for (int i = 0; i < 4; i++)
+            //4방면 중 한개라도 땅에 닿아있는 판정일 경우 점프 가능
+            if (Physics.Raycast(pos + jumpPos[i], Vector3.down, out rayHit, 0.55f))
             {
-                RaycastHit rayHit;
-
-                //4방면 중 한개라도 땅에 닿아있는 판정일 경우 점프 가능
-                if (Physics.Raycast(pos + jumpPos[i], Vector3.down, out rayHit, 0.5f))
+                if (rayHit.collider.CompareTag("Ground"))
                 {
-                    if (rayHit.collider.CompareTag("Ground"))
-                    {
-                        canJump = true;
-                        break;
-                    }
+                    canJump = true;
+                    break;
                 }
             }
-
-            if (canJump) rigid.velocity = Vector3.up * 7;
         }
+
+        if (canJump) rigid.velocity = Vector3.up * 7;
     }
+
+    //private void Move()
+    //{
+    //    var nextPos = Vector3.zero;
+    //    var jumpPos = Vector3.zero;
+    //    isMove = false;
+
+    //    if (Input.GetKey(KeyCode.W)) nextPos.z = 1;
+    //    else if (Input.GetKey(KeyCode.S)) nextPos.z = -1;
+
+    //    if (Input.GetKey(KeyCode.A)) nextPos.x = -1;
+    //    else if (Input.GetKey(KeyCode.D)) nextPos.x = 1;
+
+    //    if (nextPos != Vector3.zero)
+    //    {
+    //        nextPos = (this.transform.forward * nextPos.z) + (this.transform.right * nextPos.x);
+    //        isMove = true;
+    //    }
+
+    //    jumpPos.y = rigid.velocity.y;
+    //    rigid.velocity = nextPos.normalized * moveSpeed + jumpPos;
+    //}
+
+    //private void Jump()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        var canJump = false;
+    //        var pos = this.transform.position;
+
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            RaycastHit rayHit;
+    //            //Debug.DrawRay(pos + jumpPos[i], Vector3.down, Color.red, 0.5f);
+
+    //            //4방면 중 한개라도 땅에 닿아있는 판정일 경우 점프 가능
+    //            if (Physics.Raycast(pos + jumpPos[i], Vector3.down, out rayHit, 0.55f))
+    //            {
+    //                if (rayHit.collider.CompareTag("Ground"))
+    //                {
+    //                    canJump = true;
+    //                    break;
+    //                }
+    //            }
+    //        }
+
+    //        if (canJump) rigid.velocity = Vector3.up * 7;
+    //    }
+    //}
 
     //private void Move()
     //{

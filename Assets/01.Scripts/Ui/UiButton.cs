@@ -8,7 +8,7 @@ IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IAwake
     protected TMP_Text title;
     protected GameObject touchImage;
 
-    private void Awake() => GameManager.startManager.Add(this);
+    private void Awake() => GameManager.lifeCycle.Add(this);
 
     public virtual void OnAwake()
     {
