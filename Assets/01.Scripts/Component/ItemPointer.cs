@@ -53,6 +53,7 @@ public class ItemPointer : MonoBehaviour
         if (other.gameObject.CompareTag("Item"))
         {
             isTouch = false;
+            GameManager.ui.SetIntegerUi(UiCode.Touch, 0);
         }
     }
 }

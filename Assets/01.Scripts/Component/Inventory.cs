@@ -24,9 +24,10 @@ public class Inventory : MonoBehaviour, IAwake, IActiveUi, IGetIntegerUi
             }
         }
 
-        this.gameObject.SetActive(false);
         GameManager.ui.Add(UiCode.Inventory, this);
         GameManager.Add(this);
+
+        this.gameObject.SetActive(false);
     }
 
     public void OnGetIntegerUi(int _itemId)
@@ -39,7 +40,12 @@ public class Inventory : MonoBehaviour, IAwake, IActiveUi, IGetIntegerUi
 
     public void OnActive()
     {
-        if (this.gameObject.activeSelf) this.gameObject.SetActive(false);
-        else this.gameObject.SetActive(true);
+        var active = this.gameObject.activeSelf;
+
+        this.gameObject.SetActive(!active);
+        GameManager.stopGame = !active;
+
+        Cursor.lockState = active ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !active;
     }
 }

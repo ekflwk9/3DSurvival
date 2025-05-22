@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41f4f40306820e4e87d0e4ca9b2d281, type: 3}
   m_Name: MeleeItem
   m_EditorClassIdentifier: 
-  dmage: 5
+  itemName: "\uADFC\uC811 \uBB34\uAE30"
   info: "\uC774 \uC544\uC774\uD15C\uC740 \uADFC\uC811 \uBB34\uAE30\uC785\uB2C8\uB2E4."
   icon: {fileID: 21300000, guid: 05bd1103ea832f4408c653893c82a523, type: 3}

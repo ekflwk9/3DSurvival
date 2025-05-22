@@ -12,6 +12,10 @@ public class PlayCamera : MonoBehaviour, ILoad
 
     public void OnLoad()
     {
+        Application.targetFrameRate = 60;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         anim = GetComponent<Animator>();
         GameManager.Add(this);
     }

@@ -19,7 +19,6 @@ public interface IInteraction { public bool OnInteraction(); }
 public interface IJump { public void OnJump(float _jumpPower); }
 public interface ITouch { public void OnTouch(); }
 
-
 public class Service
 {
     public static readonly WaitForSeconds oneSecond = new WaitForSeconds(1);

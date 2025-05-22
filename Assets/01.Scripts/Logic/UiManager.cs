@@ -6,6 +6,8 @@ public enum UiCode
     Health = 1,
     ItemInfo = 2,
     Inventory = 3,
+    CrossHair = 4,
+    Touch = 5,
 }
 
 public class UiManager
@@ -28,7 +30,7 @@ public class UiManager
             else Service.Log($"{_uiCode}라는 키로 이미 \"ActiveUi\"에 추가된 상태");
         }
 
-        if(_uiComponent is IGetIntegerUi integerUi)
+        if (_uiComponent is IGetIntegerUi integerUi)
         {
             if (!integer.ContainsKey(_uiCode)) integer.Add(_uiCode, integerUi);
             else Service.Log($"{_uiCode}라는 키로 이미 \"IntegerUi\"에 추가된 상태");

@@ -19,6 +19,7 @@ IAwake, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         icon = this.transform.Find("Icon").GetComponent<Image>();
         itemNumber = this.transform.Find("Number").GetComponent<TMP_Text>();
 
+        itemNumber.text = "";
         icon.color = Color.clear;
     }
 
@@ -27,15 +28,14 @@ IAwake, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         if (id == 0)
         {
             id = _id;
-            itemNumber.text = GameManager.item.item[id].name;
-
             icon.color = Color.white;
-            icon.sprite = GameManager.item.item[id].Sprite();
+            icon.sprite = GameManager.item.type[id].Sprite();
         }
 
         else if (id == _id)
         {
             count++;
+            itemNumber.text = count.ToString();
         }
 
         else
@@ -48,13 +48,16 @@ IAwake, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        GameManager.ui.ActiveUi(UiCode.ItemInfo);
-        GameManager.ui.SetIntegerUi(UiCode.ItemInfo, id);
+        if (id != 0)
+        {
+            GameManager.ui.ActiveUi(UiCode.ItemInfo);
+            GameManager.ui.SetIntegerUi(UiCode.ItemInfo, id);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        GameManager.ui.ActiveUi(UiCode.ItemInfo);
+        if (id != 0) GameManager.ui.ActiveUi(UiCode.ItemInfo);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -74,6 +77,7 @@ IAwake, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
                 count = 0;
                 itemNumber.text = "";
                 icon.color = Color.clear;
+                GameManager.ui.ActiveUi(UiCode.ItemInfo);
             }
         }
     }

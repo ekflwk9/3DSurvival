@@ -9,5 +9,6 @@ public class LoadData : MonoBehaviour, ILoad
     public void OnLoad()
     {
         GameManager.sound.Load();
+        GameManager.item.Load();
     }
 }
