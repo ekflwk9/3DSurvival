@@ -14,8 +14,16 @@ public class Player : MonoBehaviour, ILoad, IHit
         //action = GetComponent<PlayerAction>();
         controller = GetComponent<PlayerController>();
 
-        GameManager.Add(this);
-        DontDestroyOnLoad(this.gameObject);
+        if (GameManager.player == null)
+        {
+            GameManager.Add(this);
+            DontDestroyOnLoad(this.gameObject);
+        }
+
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public void OnHit(int _dmg)
@@ -24,5 +32,14 @@ public class Player : MonoBehaviour, ILoad, IHit
         GameManager.cam.Action("HitShake");
         GameManager.ui.UpdateUi(UiCode.Health);
         //GameManager.sound.OnEffect(SoundCode.PlayerHit);
+    }
+
+    public void Heal(int _value)
+    {
+        if (health < 100)
+        {
+            health += _value;
+            GameManager.ui.UpdateUi(UiCode.Health);
+        }
     }
 }

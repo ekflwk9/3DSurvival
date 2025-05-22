@@ -9,18 +9,20 @@ public interface IStart { public void OnStart(); }
 public interface IEnd { public void OnEnd(); }
 public interface ISolidSound { public void OnVolume(); }
 
-//UI
-public interface IShowUi { public void OnShow(); }
-public interface IHideUi { public void OnHide(); }
+public interface IActiveUi { public void OnActive(); }
 public interface IUpdateUi { public void OnUpdate(); }
+public interface IGetIntegerUi { public void OnGetIntegerUi(int _value); }
 
 //Game
 public interface IHit { public void OnHit(int _dmg); }
-public interface IInteraction { public void OnInteraction(); }
+public interface IInteraction { public bool OnInteraction(); }
+public interface IJump { public void OnJump(float _jumpPower); }
+public interface ITouch { public void OnTouch(); }
+
 
 public class Service
 {
-    public static readonly WaitForSeconds oneSecond= new WaitForSeconds(1);
+    public static readonly WaitForSeconds oneSecond = new WaitForSeconds(1);
 
     /// <summary>
     /// Resource파일 / 특정 파일에서 찾고 싶은 아이템을 불러옴

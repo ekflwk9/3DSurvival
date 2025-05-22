@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, ILoad
+public class PlayerController : MonoBehaviour, ILoad, IJump
 {
     [SerializeField] private float moveSpeed = 3.5f;
 
@@ -65,26 +65,27 @@ public class PlayerController : MonoBehaviour, ILoad
     /// </summary>
     public void Jump()
     {
-        var canJump = false;
         var pos = this.transform.position;
 
         for (int i = 0; i < 5; i++)
         {
             RaycastHit rayHit;
-            //Debug.DrawRay(pos + jumpPos[i], Vector3.down, Color.red, 0.5f);
 
             //4방면 중 한개라도 땅에 닿아있는 판정일 경우 점프 가능
             if (Physics.Raycast(pos + jumpPos[i], Vector3.down, out rayHit, 0.55f))
             {
                 if (rayHit.collider.CompareTag("Ground"))
                 {
-                    canJump = true;
+                    rigid.velocity = Vector3.up * 7;
                     break;
                 }
             }
         }
+    }
 
-        if (canJump) rigid.velocity = Vector3.up * 7;
+    public void OnJump(float _jumpPower)
+    {
+        rigid.velocity = Vector3.up * _jumpPower;
     }
 
     //private void Move()

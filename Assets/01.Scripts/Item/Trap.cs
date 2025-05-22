@@ -1,10 +1,12 @@
 using System.Collections;
-using System.Text;
 using UnityEngine;
 
 public class Trap : MonoBehaviour, IStart
 {
-    private StringBuilder target = new StringBuilder(30);
+    [SerializeField] private int damage = 5;
+
+    private bool isTouch;
+    private IHit target;
 
     private void Awake() => GameManager.lifeCycle.Add(this);
 
@@ -17,7 +19,7 @@ public class Trap : MonoBehaviour, IStart
     {
         while (true)
         {
-            //if(target.Length != 0) GameManager.eventManager.Hit(target);
+            if (isTouch) target.OnHit(damage);
             yield return Service.oneSecond;
         }
     }
@@ -26,9 +28,10 @@ public class Trap : MonoBehaviour, IStart
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (target.Length == 0)
+            if (collision.gameObject.TryGetComponent<IHit>(out var hitTarget))
             {
-                target.Append(collision.gameObject.name);
+                isTouch = true;
+                target = hitTarget;
             }
         }
     }
@@ -37,10 +40,7 @@ public class Trap : MonoBehaviour, IStart
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (target.Length != 0)
-            {
-                target.Clear();
-            }
+            isTouch = false;
         }
     }
 }

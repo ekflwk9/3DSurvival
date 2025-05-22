@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 public class ItemData : ScriptableObject
 {
-    [FormerlySerializedAs("itemasd")][SerializeField] private string itemName;
+    [FormerlySerializedAs("value")][SerializeField] private int value;
+    [FormerlySerializedAs("info")][SerializeField] private string info;
+    [FormerlySerializedAs("icon")][SerializeField] private Sprite icon;
 
-    [SerializeField] private Sprite icon;
-    [SerializeField] private GameObject dropPrefab;
+    public int Value() => value;
+    public string Info() => info;
+    public Sprite Sprite() => icon;
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthUi : MonoBehaviour, ILoad, IUpdateUi, IShowUi, IHideUi
+public class HealthUi : MonoBehaviour, ILoad, IUpdateUi, IActiveUi
 {
     private Image slider;
 
@@ -19,11 +19,12 @@ public class HealthUi : MonoBehaviour, ILoad, IUpdateUi, IShowUi, IHideUi
 
     public void OnUpdate()
     {
-        var fillAmount = GameManager.player.health * 0.01f;
-        slider.fillAmount -= fillAmount;
+        slider.fillAmount = GameManager.player.health * 0.01f;
     }
 
-    public void OnShow() => this.gameObject.SetActive(true);
-
-    public void OnHide() => this.gameObject.SetActive(false);
+    public void OnActive()
+    {
+        if(this.gameObject.activeSelf) this.gameObject.SetActive(false);
+        else this.gameObject.SetActive(true);
+    }
 }
